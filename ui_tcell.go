@@ -64,7 +64,7 @@ func (ui *tcellUI) SetTheme(t *Theme) {
 }
 
 func (ui *tcellUI) SetFocusChain(chain FocusChain) {
-	ui.kbFocus.chain = chain
+	ui.kbFocus.setFocusChain(chain)
 }
 
 func (ui *tcellUI) SetKeybinding(seq string, fn func()) {
@@ -85,10 +85,7 @@ func (ui *tcellUI) Run() error {
 		return err
 	}
 
-	if w := ui.kbFocus.chain.FocusDefault(); w != nil {
-		w.SetFocused(true)
-		ui.kbFocus.focusedWidget = w
-	}
+	ui.kbFocus.setFocusChain(DefaultFocusChain)
 
 	ui.screen.SetStyle(tcell.StyleDefault)
 	ui.screen.EnableMouse()
